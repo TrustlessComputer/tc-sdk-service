@@ -1,5 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {createTx} from "tc-js";
+import {CreateTxDto} from "./create-tx.dto";
 
 @Injectable()
 export class AppService {
@@ -7,9 +8,9 @@ export class AppService {
     return 'Hello World!';
   }
 
-  createTxFromSDK(): Object {
+  createTxFromSDK(dto: CreateTxDto): Object {
     let resp = createTx(
-      null, [], null, '', null, null, null, false
+      dto.privateKey, dto.utxos, dto.inscriptions, dto.sendInscriptionID, dto.receiverInsAddress, dto.sendAmount, dto.feeRatePerByte, false
     )
     return {
       "data": resp

@@ -16,6 +16,6 @@ export class AppController {
   createTx(@Query() queries: any, @Param() params: any, @Body() createTxDto: CreateTxDto): Object {
     console.log({params});
     console.log(createTxDto);
-    return this.appService.createTxFromSDK();
+    return this.appService.createTxFromSDK(createTxDto);
   }
 }
