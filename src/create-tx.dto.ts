@@ -3,6 +3,7 @@ import BigNumber from "bignumber.js";
 
 export class CreateTxDto {
   privateKey: Buffer;
+  privateString: string;
   utxos: UTXO[];
   inscriptions: {
     [key: string]: Inscription[];
