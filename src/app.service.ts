@@ -1,4 +1,5 @@
 import {Injectable} from '@nestjs/common';
+import {createTx} from "tc-js";
 
 @Injectable()
 export class AppService {
@@ -6,9 +7,12 @@ export class AppService {
     return 'Hello World!';
   }
 
-  createTx(): Object {
+  createTxFromSDK(): Object {
+    let resp = createTx(
+      null, [], null, '', null, null, null, false
+    )
     return {
-      "tx": "xxxx"
+      "data": resp
     }
   }
 }

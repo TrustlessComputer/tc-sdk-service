@@ -12,7 +12,7 @@ export class AppController {
   }
 
   @Get('create-tx')
-  createTx(): string {
-    return this.appService.getHello();
+  createTx(): Object {
+    return this.appService.createTxFromSDK();
   }
 }
