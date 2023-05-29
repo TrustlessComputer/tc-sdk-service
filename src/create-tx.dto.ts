@@ -1,4 +1,4 @@
-import {Inscription, UTXO} from "tc-js";
+import { Inscription, UTXO } from "tc-js";
 import BigNumber from "bignumber.js";
 
 export class CreateTxDto {
