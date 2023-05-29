@@ -12,16 +12,17 @@ export class AppService {
   createTxFromSDK(dto: CreateTxDto): Object {
     dto.privateKey = Buffer.from(dto.privateString);
     dto.sendAmount = BigNumber(dto.sendAmount);
-    let resp = createTx(
-      dto.privateKey,
-      dto.utxos,
-      dto.inscriptions,
-      dto.sendInscriptionID,
-      dto.receiverInsAddress,
-      dto.sendAmount,
-      dto.feeRatePerByte,
-      false
-    );
+    let params = {
+      senderPrivateKey: dto.privateKey,
+      senderAddress: dto.senderAddress,
+      utxos: dto.utxos,
+      inscriptions: dto.inscriptions,
+      sendInscriptionID: dto.sendInscriptionID,
+      receiverInsAddress: dto.receiverInsAddress,
+      sendAmount: dto.sendAmount,
+      feeRatePerByte: dto.feeRatePerByte,
+    };
+    let resp = createTx(params);
     return {
       data: resp,
     };
