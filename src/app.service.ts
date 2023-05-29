@@ -1,7 +1,8 @@
-import { Injectable } from "@nestjs/common";
-import { createTx } from "tc-js";
+import { convertPrivateKeyFromStr, createTx } from "tc-js";
+
 import { BigNumber } from "bignumber.js";
 import { CreateTxDto } from "./create-tx.dto";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class AppService {
@@ -10,10 +11,10 @@ export class AppService {
   }
 
   createTxFromSDK(dto: CreateTxDto): Object {
-    dto.privateKey = Buffer.from(dto.privateString);
-    dto.sendAmount = BigNumber(dto.sendAmount);
+    const privateKey = convertPrivateKeyFromStr(dto.privateString);
+    // dto.sendAmount = BigNumber(dto.sendAmount);
     let params = {
-      senderPrivateKey: dto.privateKey,
+      senderPrivateKey: privateKey,
       senderAddress: dto.senderAddress,
       utxos: dto.utxos,
       inscriptions: dto.inscriptions,
@@ -21,6 +22,7 @@ export class AppService {
       receiverInsAddress: dto.receiverInsAddress,
       sendAmount: dto.sendAmount,
       feeRatePerByte: dto.feeRatePerByte,
+      isUseInscriptionPayFeeParam: false,
     };
     let resp = createTx(params);
     return {

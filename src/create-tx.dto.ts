@@ -1,8 +1,8 @@
 import { Inscription, UTXO } from "tc-js";
+
 import BigNumber from "bignumber.js";
 
 export class CreateTxDto {
-  privateKey: Buffer;
   privateString: string;
   senderAddress: string;
   utxos: UTXO[];
