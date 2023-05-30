@@ -1,5 +1,5 @@
 # Base image
-FROM node:18
+FROM node:18 as deps
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -9,6 +9,10 @@ COPY package*.json ./
 
 # Install app dependencies
 RUN npm install
+
+FROM deps as runner
+
+WORKDIR /usr/src/app
 
 # Bundle app source
 COPY . .
