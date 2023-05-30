@@ -1,9 +1,15 @@
-import { convertPrivateKeyFromStr, createTx } from "tc-js";
+import {
+  NetworkType,
+  convertPrivateKeyFromStr,
+  createTx,
+  setBTCNetwork,
+} from "tc-js";
 
 import { BigNumber } from "bignumber.js";
 import { CreateTxDto } from "./create-tx.dto";
 import { Injectable } from "@nestjs/common";
 
+import { networks } from "bitcoinjs-lib";
 @Injectable()
 export class AppService {
   getHello(): string {
@@ -11,8 +17,12 @@ export class AppService {
   }
 
   createTxFromSDK(dto: CreateTxDto): Object {
+    global.tcBTCNetwork = networks.regtest;
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
-    // dto.sendAmount = BigNumber(dto.sendAmount);
+    dto.sendAmount = BigNumber(dto.sendAmount);
+    dto.utxos.forEach((utxo) => {
+      utxo.value = BigNumber(utxo.value);
+    });
     let params = {
       senderPrivateKey: privateKey,
       senderAddress: dto.senderAddress,
