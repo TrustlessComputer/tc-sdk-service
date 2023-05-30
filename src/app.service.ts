@@ -17,7 +17,14 @@ export class AppService {
   }
 
   createTxFromSDK(dto: CreateTxDto): Object {
-    global.tcBTCNetwork = networks.regtest;
+    if (dto.network === NetworkType.Mainnet) {
+      global.tcBTCNetwork = networks.bitcoin;
+    } else if (dto.network === NetworkType.Testnet) {
+      global.tcBTCNetwork = networks.testnet;
+    } else if (dto.network === NetworkType.Regtest) {
+      global.tcBTCNetwork = networks.regtest;
+    }
+
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
     dto.sendAmount = BigNumber(dto.sendAmount);
     dto.utxos.forEach((utxo) => {
