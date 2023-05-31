@@ -8,7 +8,7 @@ import {
   HttpCode,
 } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { CreateTxDto } from "./create-tx.dto";
+import { CreateTxDto, InscribeTxDto } from "./create-tx.dto";
 
 @Controller()
 export class AppController {
@@ -29,5 +29,17 @@ export class AppController {
     console.log({ params });
     console.log(createTxDto);
     return this.appService.createTxFromSDK(createTxDto);
+  }
+
+  @Post("inscribe-tx")
+  @HttpCode(200)
+  inscribeTx(
+    @Query() queries: any,
+    @Param() params: any,
+    @Body() inscribeTxDto: InscribeTxDto
+  ): Object {
+    console.log({ params });
+    console.log(inscribeTxDto);
+    return this.appService.inscribeTxFromSDK(inscribeTxDto);
   }
 }

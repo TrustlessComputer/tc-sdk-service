@@ -15,3 +15,18 @@ export class CreateTxDto {
   sendAmount: BigNumber;
   feeRatePerByte: number;
 }
+
+export class InscribeTxDto {
+  network: Number;
+  privateString: string;
+  senderAddress: string;
+  utxos: UTXO[];
+  inscriptions: {
+    [key: string]: Inscription[];
+  };
+  sendInscriptionID: string | undefined;
+  receiverInsAddress: string;
+  sendAmount: BigNumber;
+  feeRatePerByte: number;
+  data: string;
+}
