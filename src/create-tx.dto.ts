@@ -24,9 +24,6 @@ export class InscribeTxDto {
   inscriptions: {
     [key: string]: Inscription[];
   };
-  sendInscriptionID: string | undefined;
-  receiverInsAddress: string;
-  sendAmount: BigNumber;
-  feeRatePerByte: number;
   data: string;
+  feeRatePerByte: number;
 }

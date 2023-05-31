@@ -64,7 +64,6 @@ export class AppService {
     }
 
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
-    dto.sendAmount = BigNumber(dto.sendAmount);
     dto.utxos.forEach((utxo) => {
       utxo.value = BigNumber(utxo.value);
     });
