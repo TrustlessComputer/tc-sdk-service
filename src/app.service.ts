@@ -54,7 +54,7 @@ export class AppService {
     }
   }
 
-  inscribeTxFromSDK(dto: InscribeTxDto): Object {
+  async inscribeTxFromSDK(dto: InscribeTxDto): Promise<Object> {
     if (dto.network === NetworkType.Mainnet) {
       global.tcBTCNetwork = networks.bitcoin;
     } else if (dto.network === NetworkType.Testnet) {
@@ -77,7 +77,7 @@ export class AppService {
     };
 
     try {
-      let resp = ordCreateInscribeTx(params);
+      let resp = await ordCreateInscribeTx(params);
       return {
         data: resp,
       };
