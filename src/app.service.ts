@@ -1,6 +1,7 @@
 import { CreateTxDto, InscribeTxDto } from "./create-tx.dto";
 import {
   NetworkType,
+  UTXO,
   convertPrivateKeyFromStr,
   createTx,
   ordCreateInscribeTx,
@@ -26,18 +27,23 @@ export class AppService {
     // } else if (dto.network === NetworkType.Regtest) {
     //   global.tcBTCNetwork = networks.regtest;
     // }
-    setupConfig({ storage: undefined, tcClient: undefined, netType: dto.network.valueOf() })
-
+    setupConfig({
+      storage: undefined,
+      tcClient: undefined,
+      netType: dto.network.valueOf(),
+    });
 
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
-    dto.sendAmount = BigNumber(dto.sendAmount);
+    dto.sendAmount = new BigNumber(dto.sendAmount);
+    let utxos: UTXO[] = [];
     dto.utxos.forEach((utxo) => {
-      utxo.value = BigNumber(utxo.value);
+      utxo.value = new BigNumber(utxo.value);
+      utxos.push(utxo);
     });
     let params = {
       senderPrivateKey: privateKey,
       senderAddress: dto.senderAddress,
-      utxos: dto.utxos,
+      utxos: utxos,
       inscriptions: dto.inscriptions,
       sendInscriptionID: dto.sendInscriptionID,
       receiverInsAddress: dto.receiverInsAddress,
@@ -67,16 +73,22 @@ export class AppService {
     // }
     // setBTCNetwork(dto.network.valueOf());
 
-    setupConfig({ storage: undefined, tcClient: undefined, netType: dto.network.valueOf() })
+    setupConfig({
+      storage: undefined,
+      tcClient: undefined,
+      netType: dto.network.valueOf(),
+    });
 
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
+    let utxos: UTXO[] = [];
     dto.utxos.forEach((utxo) => {
-      utxo.value = BigNumber(utxo.value);
+      utxo.value = new BigNumber(utxo.value);
+      utxos.push(utxo);
     });
     let params = {
       senderPrivateKey: privateKey,
       senderAddress: dto.senderAddress,
-      utxos: dto.utxos,
+      utxos: utxos,
       inscriptions: dto.inscriptions,
       feeRatePerByte: dto.feeRatePerByte,
       data: dto.data,
