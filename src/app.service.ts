@@ -25,6 +25,7 @@ export class AppService {
     } else if (dto.network === NetworkType.Regtest) {
       global.tcBTCNetwork = networks.regtest;
     }
+    setBTCNetwork(global.tcBTCNetwork);
 
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
     dto.sendAmount = BigNumber(dto.sendAmount);
@@ -62,6 +63,7 @@ export class AppService {
     } else if (dto.network === NetworkType.Regtest) {
       global.tcBTCNetwork = networks.regtest;
     }
+    setBTCNetwork(global.tcBTCNetwork);
 
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
     dto.utxos.forEach((utxo) => {
