@@ -18,13 +18,13 @@ export class AppService {
   }
 
   createTxFromSDK(dto: CreateTxDto): Object {
-    if (dto.network === NetworkType.Mainnet) {
-      global.tcBTCNetwork = networks.bitcoin;
-    } else if (dto.network === NetworkType.Testnet) {
-      global.tcBTCNetwork = networks.testnet;
-    } else if (dto.network === NetworkType.Regtest) {
-      global.tcBTCNetwork = networks.regtest;
-    }
+    // if (dto.network === NetworkType.Mainnet) {
+    //   global.tcBTCNetwork = networks.bitcoin;
+    // } else if (dto.network === NetworkType.Testnet) {
+    //   global.tcBTCNetwork = networks.testnet;
+    // } else if (dto.network === NetworkType.Regtest) {
+    //   global.tcBTCNetwork = networks.regtest;
+    // }
     setBTCNetwork(dto.network.valueOf());
 
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
@@ -56,13 +56,13 @@ export class AppService {
   }
 
   async inscribeTxFromSDK(dto: InscribeTxDto): Promise<Object> {
-    if (dto.network === NetworkType.Mainnet) {
-      global.tcBTCNetwork = networks.bitcoin;
-    } else if (dto.network === NetworkType.Testnet) {
-      global.tcBTCNetwork = networks.testnet;
-    } else if (dto.network === NetworkType.Regtest) {
-      global.tcBTCNetwork = networks.regtest;
-    }
+    // if (dto.network === NetworkType.Mainnet) {
+    //   global.tcBTCNetwork = networks.bitcoin;
+    // } else if (dto.network === NetworkType.Testnet) {
+    //   global.tcBTCNetwork = networks.testnet;
+    // } else if (dto.network === NetworkType.Regtest) {
+    //   global.tcBTCNetwork = networks.regtest;
+    // }
     setBTCNetwork(dto.network.valueOf());
 
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
