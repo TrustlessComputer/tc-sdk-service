@@ -1,16 +1,17 @@
+import { CreateTxDto, InscribeTxDto } from "./create-tx.dto";
 import {
   NetworkType,
   convertPrivateKeyFromStr,
   createTx,
   ordCreateInscribeTx,
   setBTCNetwork,
+  setupConfig,
 } from "tc-js";
 
 import { BigNumber } from "bignumber.js";
-import { CreateTxDto, InscribeTxDto } from "./create-tx.dto";
 import { Injectable } from "@nestjs/common";
-
 import { networks } from "bitcoinjs-lib";
+
 @Injectable()
 export class AppService {
   getHello(): string {
@@ -25,7 +26,8 @@ export class AppService {
     // } else if (dto.network === NetworkType.Regtest) {
     //   global.tcBTCNetwork = networks.regtest;
     // }
-    setBTCNetwork(dto.network.valueOf());
+    setupConfig({ storage: undefined, tcClient: undefined, netType: dto.network.valueOf() })
+
 
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
     dto.sendAmount = BigNumber(dto.sendAmount);
@@ -63,7 +65,9 @@ export class AppService {
     // } else if (dto.network === NetworkType.Regtest) {
     //   global.tcBTCNetwork = networks.regtest;
     // }
-    setBTCNetwork(dto.network.valueOf());
+    // setBTCNetwork(dto.network.valueOf());
+
+    setupConfig({ storage: undefined, tcClient: undefined, netType: dto.network.valueOf() })
 
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
     dto.utxos.forEach((utxo) => {
