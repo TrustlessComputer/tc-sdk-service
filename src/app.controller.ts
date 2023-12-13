@@ -8,11 +8,11 @@ import {
   HttpCode,
 } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { CreateTxDto, InscribeTxDto, CreateTxExposeDto } from "./create-tx.dto";
+import { CreateTxDto, InscribeTxDto, CreateTxExposeDto, CreateTxSendMultiDto } from "./create-tx.dto";
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Get()
   getHello(): string {
@@ -58,5 +58,17 @@ export class AppController {
       };
     }
     return this.appService.createTxFromSDK(createTxDto);
+  }
+
+  @Post("create-tx-send-btc-multi")
+  @HttpCode(200)
+  createTxSendBTCMulti(
+    @Query() queries: any,
+    @Param() params: any,
+    @Body() createTxSendMultiDto: CreateTxSendMultiDto
+  ): Object {
+    console.log({ params });
+    console.log(createTxSendMultiDto);
+    return this.appService.createTxSendMultiFromSDK(createTxSendMultiDto);
   }
 }
