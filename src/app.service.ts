@@ -1,15 +1,18 @@
+import { CreateTxDto, InscribeTxDto, CreateTxSendMultiDto } from "./create-tx.dto";
 import {
   NetworkType,
   convertPrivateKeyFromStr,
   createTx,
+  createTxSendBTC,
   ordCreateInscribeTx,
   setBTCNetwork,
+  setupConfig,
+  PaymentInfo,
+  UTXO
 } from "tc-js";
 
 import { BigNumber } from "bignumber.js";
-import { CreateTxDto, InscribeTxDto } from "./create-tx.dto";
 import { Injectable } from "@nestjs/common";
-
 import { networks } from "bitcoinjs-lib";
 @Injectable()
 export class AppService {
@@ -80,6 +83,46 @@ export class AppService {
 
     try {
       let resp = await ordCreateInscribeTx(params);
+      return {
+        data: resp,
+      };
+    } catch (error) {
+      return {
+        error: error.message,
+      };
+    }
+  }
+
+  createTxSendMultiFromSDK(dto: CreateTxSendMultiDto): Object {
+    setupConfig({
+      storage: undefined,
+      tcClient: undefined,
+      netType: dto.network.valueOf(),
+    });
+
+    const privateKey = convertPrivateKeyFromStr(dto.privateString);
+
+    let utxos: UTXO[] = [];
+    dto.utxos.forEach((utxo) => {
+      utxo.value = new BigNumber(utxo.value);
+      utxos.push(utxo);
+    });
+
+    let paymentInfos: PaymentInfo[] = [];
+    for (let i = 0; i < dto.paymentInfos.length; i++) {
+      dto.paymentInfos[i].amount = new BigNumber(dto.paymentInfos[i].amount);
+      paymentInfos.push(dto.paymentInfos[i]);
+    }
+    let params = {
+      senderPrivateKey: privateKey,
+      senderAddress: dto.senderAddress,
+      utxos: utxos,
+      inscriptions: dto.inscriptions,
+      paymentInfos: paymentInfos,
+      feeRatePerByte: dto.feeRatePerByte,
+    };
+    try {
+      let resp = createTxSendBTC(params);
       return {
         data: resp,
       };
