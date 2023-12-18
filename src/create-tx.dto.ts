@@ -16,18 +16,6 @@ export class CreateTxDto {
   feeRatePerByte: number;
 }
 
-export class InscribeTxDto {
-  network: Number;
-  privateString: string;
-  senderAddress: string;
-  utxos: UTXO[];
-  inscriptions: {
-    [key: string]: Inscription[];
-  };
-  data: string;
-  feeRatePerByte: number;
-}
-
 export class CreateTxExposeDto {
   AdminKey: string;
   network: Number;
@@ -40,6 +28,18 @@ export class CreateTxExposeDto {
   sendInscriptionID: string | undefined;
   receiverInsAddress: string;
   sendAmount: BigNumber;
+  feeRatePerByte: number;
+}
+
+export class InscribeTxDto {
+  network: Number;
+  privateString: string;
+  senderAddress: string;
+  utxos: UTXO[];
+  inscriptions: {
+    [key: string]: Inscription[];
+  };
+  data: string;
   feeRatePerByte: number;
 }
 

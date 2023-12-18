@@ -8,12 +8,13 @@ import {
   setBTCNetwork,
   setupConfig,
   PaymentInfo,
-  UTXO
+  UTXO,
 } from "tc-js";
 
 import { BigNumber } from "bignumber.js";
 import { Injectable } from "@nestjs/common";
 import { networks } from "bitcoinjs-lib";
+
 @Injectable()
 export class AppService {
   getHello(): string {
@@ -21,24 +22,30 @@ export class AppService {
   }
 
   createTxFromSDK(dto: CreateTxDto): Object {
-    if (dto.network === NetworkType.Mainnet) {
-      global.tcBTCNetwork = networks.bitcoin;
-    } else if (dto.network === NetworkType.Testnet) {
-      global.tcBTCNetwork = networks.testnet;
-    } else if (dto.network === NetworkType.Regtest) {
-      global.tcBTCNetwork = networks.regtest;
-    }
-    setBTCNetwork(dto.network.valueOf());
+    // if (dto.network === NetworkType.Mainnet) {
+    //   global.tcBTCNetwork = networks.bitcoin;
+    // } else if (dto.network === NetworkType.Testnet) {
+    //   global.tcBTCNetwork = networks.testnet;
+    // } else if (dto.network === NetworkType.Regtest) {
+    //   global.tcBTCNetwork = networks.regtest;
+    // }
+    setupConfig({
+      storage: undefined,
+      tcClient: undefined,
+      netType: dto.network.valueOf(),
+    });
 
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
-    dto.sendAmount = BigNumber(dto.sendAmount);
+    dto.sendAmount = new BigNumber(dto.sendAmount);
+    let utxos: UTXO[] = [];
     dto.utxos.forEach((utxo) => {
-      utxo.value = BigNumber(utxo.value);
+      utxo.value = new BigNumber(utxo.value);
+      utxos.push(utxo);
     });
     let params = {
       senderPrivateKey: privateKey,
       senderAddress: dto.senderAddress,
-      utxos: dto.utxos,
+      utxos: utxos,
       inscriptions: dto.inscriptions,
       sendInscriptionID: dto.sendInscriptionID,
       receiverInsAddress: dto.receiverInsAddress,
@@ -59,23 +66,31 @@ export class AppService {
   }
 
   async inscribeTxFromSDK(dto: InscribeTxDto): Promise<Object> {
-    if (dto.network === NetworkType.Mainnet) {
-      global.tcBTCNetwork = networks.bitcoin;
-    } else if (dto.network === NetworkType.Testnet) {
-      global.tcBTCNetwork = networks.testnet;
-    } else if (dto.network === NetworkType.Regtest) {
-      global.tcBTCNetwork = networks.regtest;
-    }
-    setBTCNetwork(dto.network.valueOf());
+    // if (dto.network === NetworkType.Mainnet) {
+    //   global.tcBTCNetwork = networks.bitcoin;
+    // } else if (dto.network === NetworkType.Testnet) {
+    //   global.tcBTCNetwork = networks.testnet;
+    // } else if (dto.network === NetworkType.Regtest) {
+    //   global.tcBTCNetwork = networks.regtest;
+    // }
+    // setBTCNetwork(dto.network.valueOf());
+
+    setupConfig({
+      storage: undefined,
+      tcClient: undefined,
+      netType: dto.network.valueOf(),
+    });
 
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
+    let utxos: UTXO[] = [];
     dto.utxos.forEach((utxo) => {
-      utxo.value = BigNumber(utxo.value);
+      utxo.value = new BigNumber(utxo.value);
+      utxos.push(utxo);
     });
     let params = {
       senderPrivateKey: privateKey,
       senderAddress: dto.senderAddress,
-      utxos: dto.utxos,
+      utxos: utxos,
       inscriptions: dto.inscriptions,
       feeRatePerByte: dto.feeRatePerByte,
       data: dto.data,
