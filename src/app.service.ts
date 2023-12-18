@@ -9,6 +9,7 @@ import {
   setupConfig,
   PaymentInfo,
   UTXO,
+  Network,
 } from "tc-js";
 
 import { BigNumber } from "bignumber.js";
@@ -73,13 +74,15 @@ export class AppService {
     // } else if (dto.network === NetworkType.Regtest) {
     //   global.tcBTCNetwork = networks.regtest;
     // }
-    // setBTCNetwork(dto.network.valueOf());
 
     setupConfig({
       storage: undefined,
       tcClient: undefined,
       netType: dto.network.valueOf(),
     });
+    setBTCNetwork(dto.network.valueOf());
+
+    console.log("Network SDK: ", Network);
 
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
     let utxos: UTXO[] = [];
