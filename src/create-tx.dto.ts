@@ -1,4 +1,4 @@
-import { Inscription, UTXO, PaymentInfo } from "tc-js";
+import { Inscription, UTXO, PaymentInfo, InscPaymentInfo } from "tc-js";
 
 import BigNumber from "bignumber.js";
 
@@ -52,6 +52,20 @@ export class CreateTxSendMultiDto {
     [key: string]: Inscription[];
   };
   sendInscriptionID: string | undefined;
+  paymentInfos: PaymentInfo[];
+  feeRatePerByte: number;
+}
+
+
+export class CreateTxSendMultiInscDto {
+  network: Number;
+  privateString: string;
+  senderAddress: string;
+  utxos: UTXO[];
+  inscriptions: {
+    [key: string]: Inscription[];
+  };
+  inscPaymentInfos: InscPaymentInfo[];
   paymentInfos: PaymentInfo[];
   feeRatePerByte: number;
 }

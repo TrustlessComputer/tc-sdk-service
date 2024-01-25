@@ -1,9 +1,10 @@
-import { CreateTxDto, InscribeTxDto, CreateTxSendMultiDto } from "./create-tx.dto";
+import { CreateTxDto, InscribeTxDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto } from "./create-tx.dto";
 import {
   NetworkType,
   convertPrivateKeyFromStr,
   createTx,
   createTxSendBTC,
+  createTxSendMultiReceivers,
   ordCreateInscribeTx,
   setBTCNetwork,
   setupConfig,
@@ -141,6 +142,49 @@ export class AppService {
     };
     try {
       let resp = createTxSendBTC(params);
+      return {
+        data: resp,
+      };
+    } catch (error) {
+      return {
+        error: error.message,
+      };
+    }
+  }
+
+  createTxSendMultiInscFromSDK(dto: CreateTxSendMultiInscDto): Object {
+    setupConfig({
+      storage: undefined,
+      tcClient: undefined,
+      netType: dto.network.valueOf(),
+    });
+
+    const privateKey = convertPrivateKeyFromStr(dto.privateString);
+
+    let utxos: UTXO[] = [];
+    dto.utxos.forEach((utxo) => {
+      utxo.value = new BigNumber(utxo.value);
+      utxos.push(utxo);
+    });
+
+    let paymentInfos: PaymentInfo[] = [];
+    for (let i = 0; i < dto.paymentInfos.length; i++) {
+      dto.paymentInfos[i].amount = new BigNumber(dto.paymentInfos[i].amount);
+      paymentInfos.push(dto.paymentInfos[i]);
+    }
+
+    // TODO: check inscriptions format
+    let params = {
+      senderPrivateKey: privateKey,
+      senderAddress: dto.senderAddress,
+      utxos: utxos,
+      inscriptions: dto.inscriptions,
+      inscPaymentInfos: dto.inscPaymentInfos,
+      paymentInfos: paymentInfos,
+      feeRatePerByte: dto.feeRatePerByte,
+    };
+    try {
+      let resp = createTxSendMultiReceivers(params);
       return {
         data: resp,
       };
