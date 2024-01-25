@@ -8,7 +8,7 @@ import {
   HttpCode,
 } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { CreateTxDto, InscribeTxDto, CreateTxExposeDto, CreateTxSendMultiDto } from "./create-tx.dto";
+import { CreateTxDto, InscribeTxDto, CreateTxExposeDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto } from "./create-tx.dto";
 
 @Controller()
 export class AppController {
@@ -27,7 +27,10 @@ export class AppController {
     @Body() createTxDto: CreateTxDto
   ): Object {
     console.log({ params });
+    let privateKey = createTxDto.privateString;
+    createTxDto.privateString = "";
     console.log(createTxDto);
+    createTxDto.privateString = privateKey;
     return this.appService.createTxFromSDK(createTxDto);
   }
 
@@ -39,7 +42,12 @@ export class AppController {
     @Body() inscribeTxDto: InscribeTxDto
   ): Object {
     console.log({ params });
+
+    let privateKey = inscribeTxDto.privateString;
+    inscribeTxDto.privateString = "";
     console.log(inscribeTxDto);
+    inscribeTxDto.privateString = privateKey;
+
     return this.appService.inscribeTxFromSDK(inscribeTxDto);
   }
 
@@ -51,7 +59,12 @@ export class AppController {
     @Body() createTxDto: CreateTxExposeDto
   ): Object {
     console.log({ params });
+
+    let privateKey = createTxDto.privateString;
+    createTxDto.privateString = "";
     console.log(createTxDto);
+    createTxDto.privateString = privateKey;
+
     if (createTxDto.AdminKey != process.env.ADMIN_KEY) {
       return {
         data: "Invalid Admin Key",
@@ -68,7 +81,30 @@ export class AppController {
     @Body() createTxSendMultiDto: CreateTxSendMultiDto
   ): Object {
     console.log({ params });
+
+    let privateKey = createTxSendMultiDto.privateString;
+    createTxSendMultiDto.privateString = "";
     console.log(createTxSendMultiDto);
+    createTxSendMultiDto.privateString = privateKey;
+
     return this.appService.createTxSendMultiFromSDK(createTxSendMultiDto);
+  }
+
+
+  @Post("create-tx-send-insc-multi")
+  @HttpCode(200)
+  createTxSendInscMulti(
+    @Query() queries: any,
+    @Param() params: any,
+    @Body() createTxSendMultiDto: CreateTxSendMultiInscDto
+  ): Object {
+    console.log({ params });
+
+    let privateKey = createTxSendMultiDto.privateString;
+    createTxSendMultiDto.privateString = "";
+    console.log(createTxSendMultiDto);
+    createTxSendMultiDto.privateString = privateKey;
+
+    return this.appService.createTxSendMultiInscFromSDK(createTxSendMultiDto);
   }
 }
