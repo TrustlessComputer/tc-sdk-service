@@ -69,3 +69,17 @@ export class CreateTxSendMultiInscDto {
   paymentInfos: PaymentInfo[];
   feeRatePerByte: number;
 }
+
+export class CreateRawTxTransferSRC20Dto {
+  network: Number;
+  publicKey: string;
+  senderAddress: string;
+  utxos: UTXO[];
+  inscriptions: {
+    [key: string]: Inscription[];
+  };
+  data: string;
+  paymentInfos: PaymentInfo[];
+  feeRatePerByte: number;
+  ReceiverAddress: string;
+}

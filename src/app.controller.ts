@@ -8,7 +8,7 @@ import {
   HttpCode,
 } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { CreateTxDto, InscribeTxDto, CreateTxExposeDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto } from "./create-tx.dto";
+import { CreateTxDto, InscribeTxDto, CreateTxExposeDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto } from "./create-tx.dto";
 
 @Controller()
 export class AppController {
@@ -106,5 +106,18 @@ export class AppController {
     createTxSendMultiDto.privateString = privateKey;
 
     return this.appService.createTxSendMultiInscFromSDK(createTxSendMultiDto);
+  }
+
+  @Post("create-raw-tx-transfer-src20")
+  @HttpCode(200)
+  createRawTxTransferSRC20(
+    @Query() queries: any,
+    @Param() params: any,
+    @Body() createRawTxTransferSRC20Dto: CreateRawTxTransferSRC20Dto
+  ): Object {
+    console.log({ params });
+    console.log(createRawTxTransferSRC20Dto);
+
+    return this.appService.createRawTxTransferSRC20FromSDK(createRawTxTransferSRC20Dto);
   }
 }
