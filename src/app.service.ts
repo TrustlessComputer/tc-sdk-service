@@ -274,10 +274,14 @@ export class AppService {
     // };
     try {
       let resp = createTransferSRC20Script(dto);
-      resp.forEach(item => item.toString("hex"));
+      let respFinal: string[] = [];
+
+      for (let item of resp) {
+        respFinal.push(item.toString("hex"));
+      }
 
       return {
-        data: resp,
+        data: respFinal,
       };
     } catch (error) {
       return {
