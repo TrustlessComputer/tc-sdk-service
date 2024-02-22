@@ -1,4 +1,4 @@
-import { CreateTxDto, InscribeTxDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto } from "./create-tx.dto";
+import { CreateTxDto, InscribeTxDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto } from "./create-tx.dto";
 import {
   NetworkType,
   convertPrivateKeyFromStr,
@@ -12,6 +12,7 @@ import {
   UTXO,
   Network,
   createTransferSRC20RawTx,
+  createTransferSRC20Script,
 } from "tc-js";
 
 import { BigNumber } from "bignumber.js";
@@ -225,11 +226,56 @@ export class AppService {
       inscriptions: dto.inscriptions,
       paymentInfos: paymentInfos,
       feeRatePerByte: dto.feeRatePerByte,
-      receiverAddress: dto.ReceiverAddress,
+      receiverAddress: dto.receiverAddress,
       data: dto.data,
     };
     try {
       let resp = createTransferSRC20RawTx(params);
+      return {
+        data: resp,
+      };
+    } catch (error) {
+      return {
+        error: error.message,
+      };
+    }
+  }
+
+  createTransferSRC20ScriptFromSDK(dto: CreateTransferSRC20ScriptDto): Object {
+    // setupConfig({
+    //   storage: undefined,
+    //   tcClient: undefined,
+    //   netType: dto.network.valueOf(),
+    // });
+
+    // const publicKey = Buffer.from(dto.publicKey, "hex");
+
+    // let utxos: UTXO[] = [];
+    // dto.utxos.forEach((utxo) => {
+    //   utxo.value = new BigNumber(utxo.value);
+    //   utxos.push(utxo);
+    // });
+
+    // let paymentInfos: PaymentInfo[] = [];
+    // for (let i = 0; i < dto.paymentInfos.length; i++) {
+    //   dto.paymentInfos[i].amount = new BigNumber(dto.paymentInfos[i].amount);
+    //   paymentInfos.push(dto.paymentInfos[i]);
+    // }
+
+    // let params = {
+    //   senderPubKey: publicKey,
+    //   senderAddress: dto.senderAddress,
+    //   utxos: utxos,
+    //   inscriptions: dto.inscriptions,
+    //   paymentInfos: paymentInfos,
+    //   feeRatePerByte: dto.feeRatePerByte,
+    //   receiverAddress: dto.receiverAddress,
+    //   data: dto.data,
+    // };
+    try {
+      let resp = createTransferSRC20Script(dto);
+      resp.forEach(item => item.toString("hex"));
+
       return {
         data: resp,
       };

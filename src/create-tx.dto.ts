@@ -81,5 +81,10 @@ export class CreateRawTxTransferSRC20Dto {
   data: string;
   paymentInfos: PaymentInfo[];
   feeRatePerByte: number;
-  ReceiverAddress: string;
+  receiverAddress: string;
+}
+
+export class CreateTransferSRC20ScriptDto {
+  secretKey: string;
+  data: string;
 }
