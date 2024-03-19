@@ -282,7 +282,7 @@ export class AppService {
       utxos: utxos,
       inscriptions: dto.inscriptions,
       feeRatePerByte: dto.feeRatePerByte,
-      receiverAddress: dto.receiverAddress,   // TODO: customize receiver address
+      receiverAddress: dto.receiverAddress,
       data: dto.data,
       contentType: dto.contentType,
     };
