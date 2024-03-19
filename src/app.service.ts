@@ -1,4 +1,4 @@
-import { CreateTxDto, InscribeTxDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto } from "./create-tx.dto";
+import { CreateTxDto, InscribeTxDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto } from "./create-tx.dto";
 import {
   NetworkType,
   convertPrivateKeyFromStr,
@@ -13,6 +13,7 @@ import {
   Network,
   createTransferSRC20RawTx,
   createTransferSRC20Script,
+  createInscribeImgTx,
 } from "tc-js";
 
 import { BigNumber } from "bignumber.js";
@@ -242,36 +243,6 @@ export class AppService {
   }
 
   createTransferSRC20ScriptFromSDK(dto: CreateTransferSRC20ScriptDto): Object {
-    // setupConfig({
-    //   storage: undefined,
-    //   tcClient: undefined,
-    //   netType: dto.network.valueOf(),
-    // });
-
-    // const publicKey = Buffer.from(dto.publicKey, "hex");
-
-    // let utxos: UTXO[] = [];
-    // dto.utxos.forEach((utxo) => {
-    //   utxo.value = new BigNumber(utxo.value);
-    //   utxos.push(utxo);
-    // });
-
-    // let paymentInfos: PaymentInfo[] = [];
-    // for (let i = 0; i < dto.paymentInfos.length; i++) {
-    //   dto.paymentInfos[i].amount = new BigNumber(dto.paymentInfos[i].amount);
-    //   paymentInfos.push(dto.paymentInfos[i]);
-    // }
-
-    // let params = {
-    //   senderPubKey: publicKey,
-    //   senderAddress: dto.senderAddress,
-    //   utxos: utxos,
-    //   inscriptions: dto.inscriptions,
-    //   paymentInfos: paymentInfos,
-    //   feeRatePerByte: dto.feeRatePerByte,
-    //   receiverAddress: dto.receiverAddress,
-    //   data: dto.data,
-    // };
     try {
       let resp = createTransferSRC20Script(dto);
       let respFinal: string[] = [];
@@ -282,6 +253,43 @@ export class AppService {
 
       return {
         data: respFinal,
+      };
+    } catch (error) {
+      return {
+        error: error.message,
+      };
+    }
+  }
+
+  createOrdInscImg(dto: CreateOrdInscImgDto): Object {
+    setupConfig({
+      storage: undefined,
+      tcClient: undefined,
+      netType: dto.network.valueOf(),
+    });
+
+    const privateKey = convertPrivateKeyFromStr(dto.privateString);
+
+    let utxos: UTXO[] = [];
+    dto.utxos.forEach((utxo) => {
+      utxo.value = new BigNumber(utxo.value);
+      utxos.push(utxo);
+    });
+
+    let params = {
+      senderPrivateKey: privateKey,
+      senderAddress: dto.senderAddress,
+      utxos: utxos,
+      inscriptions: dto.inscriptions,
+      feeRatePerByte: dto.feeRatePerByte,
+      receiverAddress: dto.receiverAddress,   // TODO: customize receiver address
+      data: dto.data,
+      contentType: dto.contentType,
+    };
+    try {
+      let resp = createInscribeImgTx(params);
+      return {
+        data: resp,
       };
     } catch (error) {
       return {

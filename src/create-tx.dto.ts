@@ -88,3 +88,17 @@ export class CreateTransferSRC20ScriptDto {
   secretKey: string;
   data: string;
 }
+
+export class CreateOrdInscImgDto {
+  network: Number;
+  privateString: string;
+  senderAddress: string;
+  utxos: UTXO[];
+  inscriptions: {
+    [key: string]: Inscription[];
+  };
+  data: Buffer;
+  contentType: string;
+  feeRatePerByte: number;
+  receiverAddress: string;
+}

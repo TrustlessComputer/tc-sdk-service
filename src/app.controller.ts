@@ -8,7 +8,7 @@ import {
   HttpCode,
 } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { CreateTxDto, InscribeTxDto, CreateTxExposeDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto } from "./create-tx.dto";
+import { CreateTxDto, InscribeTxDto, CreateTxExposeDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto } from "./create-tx.dto";
 
 @Controller()
 export class AppController {
@@ -132,5 +132,22 @@ export class AppController {
     console.log(createTransferSRC20ScriptDto);
 
     return this.appService.createTransferSRC20ScriptFromSDK(createTransferSRC20ScriptDto);
+  }
+
+  @Post("create-ord-insc-img")
+  @HttpCode(200)
+  createOrdInscImg(
+    @Query() queries: any,
+    @Param() params: any,
+    @Body() createOrdInscImgDto: CreateOrdInscImgDto
+  ): Object {
+    console.log({ params });
+
+    let privateKey = createOrdInscImgDto.privateString;
+    createOrdInscImgDto.privateString = "";
+    console.log(createOrdInscImgDto);
+    createOrdInscImgDto.privateString = privateKey;
+
+    return this.appService.createOrdInscImg(createOrdInscImgDto);
   }
 }
