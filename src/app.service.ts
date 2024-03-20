@@ -261,7 +261,7 @@ export class AppService {
     }
   }
 
-  createOrdInscImg(dto: CreateOrdInscImgDto): Object {
+  async createOrdInscImg(dto: CreateOrdInscImgDto): Promise<Object> {
     setupConfig({
       storage: undefined,
       tcClient: undefined,
@@ -288,7 +288,7 @@ export class AppService {
       contentType: dto.contentType,
     };
     try {
-      let resp = createInscribeImgTx(params);
+      let resp = await createInscribeImgTx(params);
       return {
         data: resp,
       };
