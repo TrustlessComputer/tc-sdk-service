@@ -97,7 +97,7 @@ export class CreateOrdInscImgDto {
   inscriptions: {
     [key: string]: Inscription[];
   };
-  data: Buffer;
+  data: string; // hex encode
   contentType: string;
   feeRatePerByte: number;
   receiverAddress: string;

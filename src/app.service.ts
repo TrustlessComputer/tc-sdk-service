@@ -269,6 +269,7 @@ export class AppService {
     });
 
     const privateKey = convertPrivateKeyFromStr(dto.privateString);
+    const dataBuffer = Buffer.from(dto.data, "hex");
 
     let utxos: UTXO[] = [];
     dto.utxos.forEach((utxo) => {
@@ -283,7 +284,7 @@ export class AppService {
       inscriptions: dto.inscriptions,
       feeRatePerByte: dto.feeRatePerByte,
       receiverAddress: dto.receiverAddress,
-      data: dto.data,
+      data: dataBuffer,
       contentType: dto.contentType,
     };
     try {
