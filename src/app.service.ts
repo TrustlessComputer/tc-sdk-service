@@ -6,6 +6,7 @@ import {
   createTxSendBTC,
   createTxSendMultiReceivers,
   ordCreateInscribeTx,
+  ordCreateInscribeZKProofTx,
   setBTCNetwork,
   setupConfig,
   PaymentInfo,
@@ -114,6 +115,55 @@ export class AppService {
       };
     }
   }
+
+  async inscribeZKProofTxFromSDK(dto: InscribeTxDto): Promise<Object> {
+    // if (dto.network === NetworkType.Mainnet) {
+    //   global.tcBTCNetwork = networks.bitcoin;
+    // } else if (dto.network === NetworkType.Testnet) {
+    //   global.tcBTCNetwork = networks.testnet;
+    // } else if (dto.network === NetworkType.Regtest) {
+    //   global.tcBTCNetwork = networks.regtest;
+    // }
+
+    setupConfig({
+      storage: undefined,
+      tcClient: undefined,
+      netType: dto.network.valueOf(),
+    });
+    setBTCNetwork(dto.network.valueOf());
+
+    console.log("Network SDK: ", Network);
+
+    const privateKey = convertPrivateKeyFromStr(dto.privateString);
+    const dataBuffer = Buffer.from(dto.data, "hex");
+
+    let utxos: UTXO[] = [];
+    dto.utxos.forEach((utxo) => {
+      utxo.value = new BigNumber(utxo.value);
+      utxos.push(utxo);
+    });
+
+    let params = {
+      senderPrivateKey: privateKey,
+      senderAddress: dto.senderAddress,
+      utxos: utxos,
+      inscriptions: dto.inscriptions,
+      feeRatePerByte: dto.feeRatePerByte,
+      data: dataBuffer,
+    };
+
+    try {
+      let resp = await ordCreateInscribeZKProofTx(params);
+      return {
+        data: resp,
+      };
+    } catch (error) {
+      return {
+        error: error.message,
+      };
+    }
+  }
+
 
   createTxSendMultiFromSDK(dto: CreateTxSendMultiDto): Object {
     setupConfig({

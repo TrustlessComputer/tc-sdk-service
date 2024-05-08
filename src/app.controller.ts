@@ -51,6 +51,23 @@ export class AppController {
     return this.appService.inscribeTxFromSDK(inscribeTxDto);
   }
 
+  @Post("inscribezkproof-tx")
+  @HttpCode(200)
+  inscribeZKProofTx(
+    @Query() queries: any,
+    @Param() params: any,
+    @Body() inscribeTxDto: InscribeTxDto
+  ): Object {
+    console.log({ params });
+
+    let privateKey = inscribeTxDto.privateString;
+    inscribeTxDto.privateString = "";
+    console.log(inscribeTxDto);
+    inscribeTxDto.privateString = privateKey;
+
+    return this.appService.inscribeZKProofTxFromSDK(inscribeTxDto);
+  }
+
   @Post("create-tx-expose")
   @HttpCode(200)
   createTxExpose(
