@@ -29,6 +29,7 @@ export class CreateTxExposeDto {
   receiverInsAddress: string;
   sendAmount: BigNumber;
   feeRatePerByte: number;
+  isRegtest: boolean;
 }
 
 export class InscribeTxDto {
@@ -41,6 +42,7 @@ export class InscribeTxDto {
   };
   data: string;
   feeRatePerByte: number;
+  isRegtest: boolean;
 }
 
 export class CreateTxSendMultiDto {

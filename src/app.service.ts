@@ -150,6 +150,7 @@ export class AppService {
       inscriptions: dto.inscriptions,
       feeRatePerByte: dto.feeRatePerByte,
       data: dataBuffer,
+      isRegtest: dto.isRegtest,
     };
 
     try {

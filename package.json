@@ -26,7 +26,7 @@
     "big-number": "^2.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "tc-js": "github:TrustlessComputer/tc-sdk#42b3ee0f879a2d85b8f0fef562e4f5bdb5a5224e"
+    "tc-js": "github:TrustlessComputer/tc-sdk#b5fab06939b49eb034bfd5ca7e10b0a0346004ec"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
