@@ -45,9 +45,7 @@ export class AppController {
 
     let privateKey = inscribeTxDto.privateString;
     inscribeTxDto.privateString = "";
-    console.log(inscribeTxDto);
     inscribeTxDto.privateString = privateKey;
-
     return this.appService.inscribeTxFromSDK(inscribeTxDto);
   }
 
@@ -58,13 +56,10 @@ export class AppController {
     @Param() params: any,
     @Body() inscribeTxDto: InscribeTxDto
   ): Object {
-    console.log({ params });
 
     let privateKey = inscribeTxDto.privateString;
     inscribeTxDto.privateString = "";
-    console.log(inscribeTxDto);
     inscribeTxDto.privateString = privateKey;
-
     return this.appService.inscribeZKProofTxFromSDK(inscribeTxDto);
   }
 
