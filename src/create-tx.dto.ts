@@ -33,8 +33,8 @@ export class CreateTxExposeDto {
 
 export class InscribeTxDto {
   network: Number;
-  privateString: string;
-  senderAddress: string;
+  privateString: string; // wif private key
+  senderAddress: string; 
   utxos: UTXO[];
   inscriptions: {
     [key: string]: Inscription[];
