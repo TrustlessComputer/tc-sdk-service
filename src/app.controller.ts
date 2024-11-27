@@ -8,7 +8,7 @@ import {
   HttpCode,
 } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { CreateTxDto, InscribeTxDto, CreateTxExposeDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto } from "./create-tx.dto";
+import { CreateTxDto, InscribeTxDto, CreateTxExposeDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto, CreateOrdInscGeneralDto } from "./create-tx.dto";
 
 @Controller()
 export class AppController {
@@ -149,5 +149,23 @@ export class AppController {
     createOrdInscImgDto.privateString = privateKey;
 
     return this.appService.createOrdInscImg(createOrdInscImgDto);
+  }
+
+
+  @Post("create-ord-insc-gen")
+  @HttpCode(200)
+  createOrdInscGeneral(
+    @Query() queries: any,
+    @Param() params: any,
+    @Body() createOrdInscGenDto: CreateOrdInscGeneralDto
+  ): Object {
+    console.log({ params });
+
+    let privateKey = createOrdInscGenDto.privateString;
+    createOrdInscGenDto.privateString = "";
+    console.log(createOrdInscGenDto);
+    createOrdInscGenDto.privateString = privateKey;
+
+    return this.appService.createOrdInscGeneral(createOrdInscGenDto);
   }
 }

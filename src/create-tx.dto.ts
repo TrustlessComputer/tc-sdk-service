@@ -34,7 +34,7 @@ export class CreateTxExposeDto {
 export class InscribeTxDto {
   network: Number;
   privateString: string; // wif private key
-  senderAddress: string; 
+  senderAddress: string;
   utxos: UTXO[];
   inscriptions: {
     [key: string]: Inscription[];
@@ -101,4 +101,24 @@ export class CreateOrdInscImgDto {
   contentType: string;
   feeRatePerByte: number;
   receiverAddress: string;
+}
+
+
+export class CreateOrdInscGeneralDto {
+  network: Number;
+  privateString: string;
+  senderAddress: string;
+  utxos: UTXO[];
+  inscriptions: {
+    [key: string]: Inscription[];
+  };
+  data: string; // hex encode
+  contentType: string;
+  feeRatePerByte: number;
+  receiverAddress: string;
+
+  metaProtocol: string;
+  parentInscTxID: string;
+  parentInscTxIndex: number;
+  parentUTXO: UTXO;
 }

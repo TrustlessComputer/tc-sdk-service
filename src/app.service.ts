@@ -1,4 +1,4 @@
-import { CreateTxDto, InscribeTxDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto } from "./create-tx.dto";
+import { CreateTxDto, InscribeTxDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto, CreateOrdInscGeneral } from "./create-tx.dto";
 import {
   NetworkType,
   convertPrivateKeyFromStr,
@@ -288,6 +288,46 @@ export class AppService {
       contentType: dto.contentType,
     };
     try {
+      let resp = await createInscribeImgTx(params);
+      return {
+        data: resp,
+      };
+    } catch (error) {
+      return {
+        error: error.message,
+      };
+    }
+  }
+
+
+  async createOrdInscGeneral(dto: CreateOrdInscGeneral): Promise<Object> {
+    setupConfig({
+      storage: undefined,
+      tcClient: undefined,
+      netType: dto.network.valueOf(),
+    });
+
+    const privateKey = convertPrivateKeyFromStr(dto.privateString);
+    const dataBuffer = Buffer.from(dto.data, "hex");
+
+    let utxos: UTXO[] = [];
+    dto.utxos.forEach((utxo) => {
+      utxo.value = new BigNumber(utxo.value);
+      utxos.push(utxo);
+    });
+
+    let params = {
+      senderPrivateKey: privateKey,
+      senderAddress: dto.senderAddress,
+      utxos: utxos,
+      inscriptions: dto.inscriptions,
+      feeRatePerByte: dto.feeRatePerByte,
+      receiverAddress: dto.receiverAddress,
+      data: dataBuffer,
+      contentType: dto.contentType,
+    };
+    try {
+      // TODO: 2525
       let resp = await createInscribeImgTx(params);
       return {
         data: resp,
