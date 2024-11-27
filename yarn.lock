@@ -2117,6 +2117,11 @@ big-number@^2.0.0:
   resolved "https://registry.yarnpkg.com/big-number/-/big-number-2.0.0.tgz#98548eda9393b445791670a213aed6f6dcd66ee3"
   integrity sha512-C67Su0g+XsmXADX/UM9L/+xSbqqwq0D/qGJs2ky6Noy2FDuCZnC38ZSXODiaBvqWma2VYRZEXgm4H74PS6tCDg==
 
+big-varuint-js@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/big-varuint-js/-/big-varuint-js-0.2.1.tgz#b4c5d9e92b061919465ebb4f66057eebd873231a"
+  integrity sha512-79JS5h53rP+L2CyXbpgMaLPKyHek7VAglJbug3KWR3CBtBabkcvxaU0PSMTBP9jBhDYoJsz5f+Ow20XSp8n52A==
+
 bignumber.js@^9.0.0, bignumber.js@^9.1.1:
   version "9.1.2"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.2.tgz#b7c4242259c008903b13707983b5f4bbd31eda0c"
@@ -6773,14 +6778,15 @@ tar@^4.0.2:
     safe-buffer "^5.2.1"
     yallist "^3.1.1"
 
-"tc-js@github:TrustlessComputer/tc-sdk#v0.1.46":
+"tc-js@github:TrustlessComputer/tc-sdk#v0.1.51":
   version "0.0.1"
-  resolved "https://codeload.github.com/TrustlessComputer/tc-sdk/tar.gz/ea3a2b17072bde2bcb5338c6f9906cdf73cb5c22"
+  resolved "https://codeload.github.com/TrustlessComputer/tc-sdk/tar.gz/c267da136f6c6d330cfcb919fe7e84d27a2e098c"
   dependencies:
     "@bitcoinerlab/secp256k1" "^1.0.2"
     "@types/lodash" "^4.14.194"
     "@types/node" "^17.0.13"
     axios "^0.24.0"
+    big-varuint-js "^0.2.1"
     bignumber.js "^9.1.1"
     bip32 "^4.0.0"
     bip39 "^3.1.0"

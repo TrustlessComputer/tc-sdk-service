@@ -115,7 +115,7 @@ export class CreateOrdInscGeneralDto {
   data: string; // hex encode
   contentType: string;
   feeRatePerByte: number;
-  receiverAddress: string;
+  // receiverAddress: string;
 
   metaProtocol: string;
   parentInscTxID: string;

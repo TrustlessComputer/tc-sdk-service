@@ -1,4 +1,4 @@
-import { CreateTxDto, InscribeTxDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto, CreateOrdInscGeneral } from "./create-tx.dto";
+import { CreateTxDto, InscribeTxDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto, CreateOrdInscGeneralDto } from "./create-tx.dto";
 import {
   NetworkType,
   convertPrivateKeyFromStr,
@@ -14,6 +14,7 @@ import {
   createTransferSRC20RawTx,
   createTransferSRC20Script,
   createInscribeImgTx,
+  createInscribeTxGeneral,
 } from "tc-js";
 
 import { BigNumber } from "bignumber.js";
@@ -300,7 +301,7 @@ export class AppService {
   }
 
 
-  async createOrdInscGeneral(dto: CreateOrdInscGeneral): Promise<Object> {
+  async createOrdInscGeneral(dto: CreateOrdInscGeneralDto): Promise<Object> {
     setupConfig({
       storage: undefined,
       tcClient: undefined,
@@ -316,19 +317,32 @@ export class AppService {
       utxos.push(utxo);
     });
 
+    let parentUTXO: UTXO = undefined;
+    if (dto.parentUTXO && dto.parentUTXO.tx_hash !== "") {
+      parentUTXO = {
+        tx_hash: dto.parentUTXO.tx_hash,
+        tx_output_n: dto.parentUTXO.tx_output_n,
+        value: new BigNumber(dto.parentUTXO.value),
+      }
+    }
+
     let params = {
       senderPrivateKey: privateKey,
       senderAddress: dto.senderAddress,
       utxos: utxos,
       inscriptions: dto.inscriptions,
       feeRatePerByte: dto.feeRatePerByte,
-      receiverAddress: dto.receiverAddress,
+      // receiverAddress: dto.receiverAddress,
       data: dataBuffer,
       contentType: dto.contentType,
+
+      metaProtocol: dto.metaProtocol,
+      parentInscTxID: dto.parentInscTxID,
+      parentInscTxIndex: dto.parentInscTxIndex,
+      parentUTXO: parentUTXO,
     };
     try {
-      // TODO: 2525
-      let resp = await createInscribeImgTx(params);
+      let resp = await createInscribeTxGeneral(params);
       return {
         data: resp,
       };
