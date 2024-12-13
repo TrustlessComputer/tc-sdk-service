@@ -122,3 +122,15 @@ export class CreateOrdInscGeneralDto {
   parentInscTxIndex: number;
   parentUTXO: UTXO;
 }
+
+
+// ******** Ripple func ******** //
+
+export class XRPLCreateInscribeTxsDto {
+  senderSeed: string;
+  receiverAddress: string;
+  amount: string;
+  data: string;  // hex encode
+  encodeVersion: number;
+  fee?: string;
+}

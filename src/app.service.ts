@@ -1,4 +1,15 @@
-import { CreateTxDto, InscribeTxDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto, CreateOrdInscGeneralDto } from "./create-tx.dto";
+import {
+  CreateTxDto,
+  InscribeTxDto,
+  CreateTxSendMultiDto,
+  CreateTxSendMultiInscDto,
+  CreateRawTxTransferSRC20Dto,
+  CreateTransferSRC20ScriptDto,
+  CreateOrdInscImgDto,
+  CreateOrdInscGeneralDto,
+  XRPLCreateInscribeTxsDto,
+} from "./app.dto";
+
 import {
   NetworkType,
   convertPrivateKeyFromStr,
@@ -15,11 +26,11 @@ import {
   createTransferSRC20Script,
   createInscribeImgTx,
   createInscribeTxGeneral,
+  createInscribeTxs as xrplCreateInscribeTxs,
 } from "tc-js";
 
 import { BigNumber } from "bignumber.js";
 import { Injectable } from "@nestjs/common";
-import { networks } from "bitcoinjs-lib";
 
 @Injectable()
 export class AppService {
@@ -28,13 +39,6 @@ export class AppService {
   }
 
   createTxFromSDK(dto: CreateTxDto): Object {
-    // if (dto.network === NetworkType.Mainnet) {
-    //   global.tcBTCNetwork = networks.bitcoin;
-    // } else if (dto.network === NetworkType.Testnet) {
-    //   global.tcBTCNetwork = networks.testnet;
-    // } else if (dto.network === NetworkType.Regtest) {
-    //   global.tcBTCNetwork = networks.regtest;
-    // }
     setupConfig({
       storage: undefined,
       tcClient: undefined,
@@ -343,6 +347,39 @@ export class AppService {
     };
     try {
       let resp = await createInscribeTxGeneral(params);
+      return {
+        data: resp,
+      };
+    } catch (error) {
+      return {
+        error: error.message,
+      };
+    }
+  }
+
+  async xrplInscribeTx(dto: XRPLCreateInscribeTxsDto): Promise<Object> {
+
+
+    // const privateKey = convertPrivateKeyFromStr(dto.privateString);
+    const dataBuffer = Buffer.from(dto.data, "hex");
+
+    let fee;
+    if (dto.fee && dto.fee !== "") {
+      fee = new BigNumber(dto.fee);
+    }
+
+
+    let params = {
+      senderSeed: dto.senderSeed,
+      receiverAddress: dto.receiverAddress,
+      amount: new BigNumber(dto.amount),
+      data: dataBuffer,
+      encodeVersion: dto.encodeVersion,
+      fee,
+    }
+
+    try {
+      let resp = await xrplCreateInscribeTxs(params);
       return {
         data: resp,
       };
