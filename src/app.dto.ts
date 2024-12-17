@@ -133,4 +133,5 @@ export class XRPLCreateInscribeTxsDto {
   data: string;  // hex encode
   encodeVersion: number;
   fee?: string;
+  rpcEndpoint: string;
 }

@@ -376,6 +376,7 @@ export class AppService {
       data: dataBuffer,
       encodeVersion: dto.encodeVersion,
       fee,
+      rpcEndpoint: dto.rpcEndpoint,
     }
 
     try {

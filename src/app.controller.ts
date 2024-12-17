@@ -181,6 +181,7 @@ export class AppController {
 
     let privateKey = dto.senderSeed;
     dto.senderSeed = "";
+    
     console.log(dto);
     dto.senderSeed = privateKey;
 
