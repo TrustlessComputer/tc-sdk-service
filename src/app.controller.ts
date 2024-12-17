@@ -8,7 +8,7 @@ import {
   HttpCode,
 } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { CreateTxDto, InscribeTxDto, CreateTxExposeDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto, CreateOrdInscGeneralDto } from "./create-tx.dto";
+import { CreateTxDto, InscribeTxDto, CreateTxExposeDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto, CreateOrdInscGeneralDto, XRPLCreateInscribeTxsDto } from "./app.dto";
 
 @Controller()
 export class AppController {
@@ -168,4 +168,25 @@ export class AppController {
 
     return this.appService.createOrdInscGeneral(createOrdInscGenDto);
   }
+
+  // create XRPL txs to inscribe data
+  @Post("/xrpl/inscribe-tx")
+  @HttpCode(200)
+  xrplInscribeData(
+    @Query() queries: any,
+    @Param() params: any,
+    @Body() dto: XRPLCreateInscribeTxsDto
+  ): Object {
+    console.log({ params });
+
+    let privateKey = dto.senderSeed;
+    dto.senderSeed = "";
+    
+    console.log(dto);
+    dto.senderSeed = privateKey;
+
+    return this.appService.xrplInscribeTx(dto);
+  }
+
+
 }

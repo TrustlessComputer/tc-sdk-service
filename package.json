@@ -26,7 +26,8 @@
     "big-number": "^2.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "tc-js": "github:TrustlessComputer/tc-sdk#v0.1.52"
+    "tc-js": "github:TrustlessComputer/tc-sdk#v0.1.55",
+    "xrpl": "^4.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
@@ -57,7 +58,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": "dist/",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
