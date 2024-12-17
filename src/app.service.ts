@@ -1,4 +1,15 @@
-import { CreateTxDto, InscribeTxDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto } from "./create-tx.dto";
+import {
+  CreateTxDto,
+  InscribeTxDto,
+  CreateTxSendMultiDto,
+  CreateTxSendMultiInscDto,
+  CreateRawTxTransferSRC20Dto,
+  CreateTransferSRC20ScriptDto,
+  CreateOrdInscImgDto,
+  CreateOrdInscGeneralDto,
+  XRPLCreateInscribeTxsDto,
+} from "./app.dto";
+
 import {
   NetworkType,
   convertPrivateKeyFromStr,
@@ -14,11 +25,12 @@ import {
   createTransferSRC20RawTx,
   createTransferSRC20Script,
   createInscribeImgTx,
+  createInscribeTxGeneral,
+  createInscribeTxs as xrplCreateInscribeTxs,
 } from "tc-js";
 
 import { BigNumber } from "bignumber.js";
 import { Injectable } from "@nestjs/common";
-import { networks } from "bitcoinjs-lib";
 
 @Injectable()
 export class AppService {
@@ -27,13 +39,6 @@ export class AppService {
   }
 
   createTxFromSDK(dto: CreateTxDto): Object {
-    // if (dto.network === NetworkType.Mainnet) {
-    //   global.tcBTCNetwork = networks.bitcoin;
-    // } else if (dto.network === NetworkType.Testnet) {
-    //   global.tcBTCNetwork = networks.testnet;
-    // } else if (dto.network === NetworkType.Regtest) {
-    //   global.tcBTCNetwork = networks.regtest;
-    // }
     setupConfig({
       storage: undefined,
       tcClient: undefined,
@@ -289,6 +294,93 @@ export class AppService {
     };
     try {
       let resp = await createInscribeImgTx(params);
+      return {
+        data: resp,
+      };
+    } catch (error) {
+      return {
+        error: error.message,
+      };
+    }
+  }
+
+
+  async createOrdInscGeneral(dto: CreateOrdInscGeneralDto): Promise<Object> {
+    setupConfig({
+      storage: undefined,
+      tcClient: undefined,
+      netType: dto.network.valueOf(),
+    });
+
+    const privateKey = convertPrivateKeyFromStr(dto.privateString);
+    const dataBuffer = Buffer.from(dto.data, "hex");
+
+    let utxos: UTXO[] = [];
+    dto.utxos.forEach((utxo) => {
+      utxo.value = new BigNumber(utxo.value);
+      utxos.push(utxo);
+    });
+
+    let parentUTXO: UTXO = undefined;
+    if (dto.parentUTXO && dto.parentUTXO.tx_hash !== "") {
+      parentUTXO = {
+        tx_hash: dto.parentUTXO.tx_hash,
+        tx_output_n: dto.parentUTXO.tx_output_n,
+        value: new BigNumber(dto.parentUTXO.value),
+      }
+    }
+
+    let params = {
+      senderPrivateKey: privateKey,
+      senderAddress: dto.senderAddress,
+      utxos: utxos,
+      inscriptions: dto.inscriptions,
+      feeRatePerByte: dto.feeRatePerByte,
+      // receiverAddress: dto.receiverAddress,
+      data: dataBuffer,
+      contentType: dto.contentType,
+
+      metaProtocol: dto.metaProtocol,
+      parentInscTxID: dto.parentInscTxID,
+      parentInscTxIndex: dto.parentInscTxIndex,
+      parentUTXO: parentUTXO,
+    };
+    try {
+      let resp = await createInscribeTxGeneral(params);
+      return {
+        data: resp,
+      };
+    } catch (error) {
+      return {
+        error: error.message,
+      };
+    }
+  }
+
+  async xrplInscribeTx(dto: XRPLCreateInscribeTxsDto): Promise<Object> {
+
+
+    // const privateKey = convertPrivateKeyFromStr(dto.privateString);
+    const dataBuffer = Buffer.from(dto.data, "hex");
+
+    let fee;
+    if (dto.fee && dto.fee !== "") {
+      fee = new BigNumber(dto.fee);
+    }
+
+
+    let params = {
+      senderSeed: dto.senderSeed,
+      receiverAddress: dto.receiverAddress,
+      amount: new BigNumber(dto.amount),
+      data: dataBuffer,
+      encodeVersion: dto.encodeVersion,
+      fee,
+      rpcEndpoint: dto.rpcEndpoint,
+    }
+
+    try {
+      let resp = await xrplCreateInscribeTxs(params);
       return {
         data: resp,
       };
