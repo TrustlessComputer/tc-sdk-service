@@ -7224,9 +7224,9 @@ tar@^4.0.2:
     safe-buffer "^5.2.1"
     yallist "^3.1.1"
 
-"tc-js@github:TrustlessComputer/tc-sdk#v0.1.55":
+"tc-js@github:TrustlessComputer/tc-sdk#v0.1.57":
   version "0.0.1"
-  resolved "https://codeload.github.com/TrustlessComputer/tc-sdk/tar.gz/c08873bd0146432dd8d60cb7ab70c8de32b74160"
+  resolved "https://codeload.github.com/TrustlessComputer/tc-sdk/tar.gz/7562a30d1b18087bec6af2fe2f996f97ec661c64"
   dependencies:
     "@bitcoinerlab/secp256k1" "^1.0.2"
     "@types/lodash" "^4.14.194"
