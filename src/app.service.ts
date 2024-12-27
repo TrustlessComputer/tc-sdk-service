@@ -379,6 +379,7 @@ export class AppService {
       encodeVersion: dto.encodeVersion,
       fee,
       rpcEndpoint: dto.rpcEndpoint,
+      protocolID: dto.protocolID,
     }
 
     try {

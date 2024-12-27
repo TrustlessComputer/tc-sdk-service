@@ -134,6 +134,7 @@ export class XRPLCreateInscribeTxsDto {
   encodeVersion: number;
   fee?: string;
   rpcEndpoint: string;
+  protocolID: string;
 }
 
 
