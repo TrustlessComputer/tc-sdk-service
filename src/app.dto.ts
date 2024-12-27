@@ -1,4 +1,4 @@
-import { Inscription, UTXO, PaymentInfo, InscPaymentInfo } from "tc-js";
+import { Inscription, UTXO, PaymentInfo, InscPaymentInfo, DUTXO } from "tc-js";
 
 import BigNumber from "bignumber.js";
 
@@ -135,3 +135,20 @@ export class XRPLCreateInscribeTxsDto {
   fee?: string;
   rpcEndpoint: string;
 }
+
+
+
+// ******** DOGE func ******** //
+
+export class DOGECreateInscribeTxsDto {
+  network: number;
+  senderPrivKey: string;
+  senderAddress: string;
+  receiverAddress: string;
+  data: string;
+  contentType: string;
+  utxos: DUTXO[];
+  feeRate?: number;
+  rpcEndpoint?: string;
+}
+

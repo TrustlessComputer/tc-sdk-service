@@ -8,6 +8,7 @@ import {
   CreateOrdInscImgDto,
   CreateOrdInscGeneralDto,
   XRPLCreateInscribeTxsDto,
+  DOGECreateInscribeTxsDto,
 } from "./app.dto";
 
 import {
@@ -27,6 +28,7 @@ import {
   createInscribeImgTx,
   createInscribeTxGeneral,
   createInscribeTxs as xrplCreateInscribeTxs,
+  dogeCreateInscribeTxs,
 } from "tc-js";
 
 import { BigNumber } from "bignumber.js";
@@ -381,6 +383,40 @@ export class AppService {
 
     try {
       let resp = await xrplCreateInscribeTxs(params);
+      return {
+        data: resp,
+      };
+    } catch (error) {
+      return {
+        error: error.message,
+      };
+    }
+  }
+
+  async dogeInscribeTx(dto: DOGECreateInscribeTxsDto): Promise<Object> {
+    // const privateKey = convertPrivateKeyFromStr(dto.privateString);
+    const dataBuffer = Buffer.from(dto.data, "hex");
+
+    // let fee;
+    // if (dto.fee && dto.fee !== "") {
+    //   fee = new BigNumber(dto.fee);
+    // }
+
+
+    let params = {
+      senderPrivKey: dto.senderPrivKey,
+      senderAddress: dto.senderAddress,
+      receiverAddress: dto.receiverAddress,
+      data: dataBuffer,
+      contentType: dto.contentType,
+      utxos: dto.utxos,
+      feeRate: dto.feeRate,
+      rpcEndpoint: dto.rpcEndpoint,
+      network: dto.network,
+    }
+
+    try {
+      let resp = await dogeCreateInscribeTxs(params);
       return {
         data: resp,
       };

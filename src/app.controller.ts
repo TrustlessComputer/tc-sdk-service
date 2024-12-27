@@ -8,7 +8,7 @@ import {
   HttpCode,
 } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { CreateTxDto, InscribeTxDto, CreateTxExposeDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto, CreateOrdInscGeneralDto, XRPLCreateInscribeTxsDto } from "./app.dto";
+import { CreateTxDto, InscribeTxDto, CreateTxExposeDto, CreateTxSendMultiDto, CreateTxSendMultiInscDto, CreateRawTxTransferSRC20Dto, CreateTransferSRC20ScriptDto, CreateOrdInscImgDto, CreateOrdInscGeneralDto, XRPLCreateInscribeTxsDto, DOGECreateInscribeTxsDto } from "./app.dto";
 
 @Controller()
 export class AppController {
@@ -181,11 +181,30 @@ export class AppController {
 
     let privateKey = dto.senderSeed;
     dto.senderSeed = "";
-    
+
     console.log(dto);
     dto.senderSeed = privateKey;
 
     return this.appService.xrplInscribeTx(dto);
+  }
+
+  // create XRPL txs to inscribe data
+  @Post("/doge/inscribe-tx")
+  @HttpCode(200)
+  dogeInscribeData(
+    @Query() queries: any,
+    @Param() params: any,
+    @Body() dto: DOGECreateInscribeTxsDto
+  ): Object {
+    console.log({ params });
+
+    let privateKey = dto.senderPrivKey;
+    dto.senderPrivKey = "";
+
+    console.log(dto);
+    dto.senderPrivKey = privateKey;
+
+    return this.appService.dogeInscribeTx(dto);
   }
 
 
