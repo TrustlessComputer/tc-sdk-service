@@ -29,6 +29,7 @@ import {
   createInscribeTxGeneral,
   createInscribeTxs as xrplCreateInscribeTxs,
   dogeCreateInscribeTxs,
+  setDogeNetwork,
 } from "tc-js";
 
 import { BigNumber } from "bignumber.js";
@@ -415,6 +416,8 @@ export class AppService {
       rpcEndpoint: dto.rpcEndpoint,
       network: dto.network,
     }
+
+    setDogeNetwork(dto.network);
 
     try {
       let resp = await dogeCreateInscribeTxs(params);

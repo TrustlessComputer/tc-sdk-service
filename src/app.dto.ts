@@ -139,6 +139,7 @@ export class XRPLCreateInscribeTxsDto {
 
 
 
+
 // ******** DOGE func ******** //
 
 export class DOGECreateInscribeTxsDto {
